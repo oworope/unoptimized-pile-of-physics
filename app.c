@@ -41,7 +41,7 @@ void app_init(ctx_t* context)
 		printf("SDL_Init failed: %s", SDL_GetError());
 	}
 
-	context->window = SDL_CreateWindow("physics-engine", 500, 500, 0);
+	context->window = SDL_CreateWindow("physics-engine", 600, 600, 0);
 	if (!context->window) {
 		printf("SDL_CreateWindow failed: %s", SDL_GetError());
 	} else { printf("window created;\n"); }
@@ -95,7 +95,7 @@ void app_render_objects(ctx_t* context, object_pool_t* pool)
 {
 	// Draw arena
 	SDL_SetRenderDrawColor(context->renderer, 100, 100, 100, 255);
-	SDL_draw_filled_circle(context->renderer, 250, 250, 250);
+	SDL_draw_filled_circle(context->renderer, 300, 300, 300);
 
 	for (int i = 0; i < pool->size; i++)
 	{

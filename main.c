@@ -1,7 +1,8 @@
+#include <stdlib.h>
+#include <time.h>
+
 #include "app.h"
-#include "object_pool.h"
 #include "solver.h"
-#include "vector.h"
 
 int main()
 {
@@ -9,35 +10,30 @@ int main()
 	app_init(&context);
 
 	solver_t solver = {.gravity = vec_create(0, 1000)};
-	object_pool_t pool = object_pool_create(4);
+	object_pool_t pool = object_pool_create(250);
 
-	object_pool_add(&pool, object_create(vec_create(400, 220)));
-	object_pool_add(&pool, object_create(vec_create(450, 170)));
-	object_pool_add(&pool, object_create(vec_create(100, 100)));
-	object_pool_add(&pool, object_create(vec_create(250, 50)));
+	srand(time(NULL));
 
-	pool.data[0].object.g = 60;
-	pool.data[0].object.b = 60;
-	pool.data[0].object.rad = 20;
 
-	// pool.data[1].object.r = 60;
-	// pool.data[1].object.g = 60;
-
-	pool.data[2].object.r = 30;
-	pool.data[2].object.b = 30;
-	pool.data[2].object.rad = 25;
-
-	pool.data[3].object.r = 140;
-	pool.data[3].object.g = 140;
-	pool.data[3].object.b = 140;
-	pool.data[3].object.rad = 40;
-
+	for (int i = 0; i < 250; i++)
+	{
+		object_pool_add(&pool, object_create(vec_create(50 + i * 10, 50 + i * 10)));
+		pool.data[i].object.r = 10;
+		pool.data[i].object.g = 10;
+		pool.data[i].object.b = rand() % 255;
+		pool.data[i].object.rad = 10 + rand() % 10;
+	}
 
 	double dt;
 	while (context.running)
 	{
 		dt = app_handle_events(&context);
-		solver_update(&solver, &pool, dt);
+		const int substeps = 16;
+		double subdt = dt / substeps;
+		for (int i = 0; i < substeps; i++)
+		{
+			solver_update(&solver, &pool, subdt);
+		}
 		app_render_objects(&context, &pool);
 		app_render_present(&context);
 	}
