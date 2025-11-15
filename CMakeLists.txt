@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.14)
+project(physics-engine)
+find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
+add_executable(${PROJECT_NAME} main.c app.c vector.c object.c object_pool.c solver.c)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3 m)
