@@ -10,34 +10,26 @@ vector_t vec_create(double x, double y)
 	return a;
 };
 
-vector_t vec_add(vector_t a, vector_t b)
+void vec_add(vector_t* a, vector_t* b)
 {
-	vector_t o;
-	o.x = a.x + b.x;
-	o.y = a.y + b.y;
-	return o;
+	a->x += b->x;
+	a->y += b->y;
 };
 
-vector_t vec_sub(vector_t a, vector_t b)
+void vec_sub(vector_t* a, vector_t* b)
 {
-	vector_t o;
-	o.x = a.x - b.x;
-	o.y = a.y - b.y;
-	return o;
+	a->x -= b->x;
+	a->y -= b->y;
 };
 
-vector_t vec_mult_scalar(vector_t a, double n)
+void vec_mult_scalar(vector_t* a, double n)
 {
-	vector_t o;
-	o.x = a.x * n;
-	o.y = a.y * n;
-	return o;
+	a->x *= n;
+	a->y *= n;
 };
 
-vector_t vec_add_scalar(vector_t a, double n)
+void vec_add_scalar(vector_t* a, double n)
 {
-	vector_t o;
-	o.x = a.x + n;
-	o.y = a.y + n;
-	return o;
+	a->x += n;
+	a->y += n;
 };

@@ -18,17 +18,17 @@ object_t object_create(vector_t pos)
 void object_update(object_t* obj, double dt)
 {
 	// basically means cur_pos = cur_pos + (cur_pos - prev_pos) + accel*dt^2
-	const vector_t velocity = vec_sub(obj->cur_pos, obj->prev_pos);
+	vector_t velocity = obj->cur_pos;
+	vec_sub(&velocity, &obj->prev_pos);
 	obj->prev_pos = obj->cur_pos;
-	obj->cur_pos = vec_add
-	(
-		vec_add(obj->cur_pos, velocity),
-		vec_mult_scalar(obj->accel, dt*dt)
-	);
+
+	vec_mult_scalar(&obj->accel, dt*dt);
+	vec_add(&obj->cur_pos, &velocity);
+	vec_add(&obj->cur_pos, &obj->accel);
 	obj->accel = null_vec;
 }
 
 void object_accelerate(object_t* obj, vector_t acc)
 {
-	obj->accel = vec_add(obj->accel, acc);
+	vec_add(&obj->accel, &acc);
 }
