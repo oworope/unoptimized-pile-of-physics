@@ -64,7 +64,7 @@ void app_quit(ctx_t *context)
 	SDL_Quit();
 }
 
-double app_handle_events(ctx_t* context)
+double app_handle_events(ctx_t* context, solver_t* solver)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -73,6 +73,28 @@ double app_handle_events(ctx_t* context)
 		(e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_ESCAPE)) {
 			context->running = false;
 		}
+
+		if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_UP) {
+			solver->gravity.y = -1000;
+		}
+
+		if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_DOWN) {
+			solver->gravity.y = 1000;
+		}
+
+		if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_LEFT) {
+			solver->gravity.x = -1000;
+		}
+
+		if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_RIGHT) {
+			solver->gravity.x = 1000;
+		}
+
+		if (e.type == SDL_EVENT_KEY_DOWN && e.key.key == SDLK_R) {
+			solver->gravity.x = 0;
+			solver->gravity.y = 0;
+		}
+
 	}
 	context->current_time = SDL_GetTicks();
 	// Calculate delta time in seconds (converted to double)
@@ -88,7 +110,7 @@ double app_handle_events(ctx_t* context)
 void app_render_present(ctx_t* context)
 {
 	SDL_RenderPresent(context->renderer);
-	SDL_Delay(16); // ~60 FPS i hope
+	SDL_Delay(8); // ~120? FPS i hope
 }
 
 void app_render_objects(ctx_t* context, object_pool_t* pool)
